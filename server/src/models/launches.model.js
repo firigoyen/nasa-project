@@ -15,6 +15,10 @@ const launch = {
 
 launches.set(launch.flightNumber, launch);
 
+function existsLauchWithId(launchId) {
+  return launches.has(launchId);
+}
+
 function getAllLaunches() {
   return Array.from(launches.values());
 }
@@ -22,16 +26,26 @@ function getAllLaunches() {
 function addNewLaunch(launch) {
   latestFlightNumber++;
   launches.set(
-    latestFlightNumber, 
+    latestFlightNumber,
     Object.assign(launch, {
       success: true,
       upcoming: true,
-      customers: ['ZTM', 'NASA'],
-      flightNumber: latestFlightNumber
-    }));
+      customers: ["ZTM", "NASA"],
+      flightNumber: latestFlightNumber,
+    })
+  );
+}
+
+function abortLaunchById(launchId) {
+  const aborted = launches.get(launchId);
+  aborted.upcoming = false;
+  aborted.success = false;
+  return aborted;
 }
 
 module.exports = {
+  existsLauchWithId,
   getAllLaunches,
-  addNewLaunch
+  addNewLaunch,
+  abortLaunchById,
 };
